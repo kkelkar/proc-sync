@@ -19,6 +19,7 @@ void * producer(void * param)
 {
 	buf_item item;
 	int id=*((int *)param); 
+	free(param);
 
 	while(1)
 	{
@@ -42,6 +43,7 @@ void * consumer(void * param)
 {
 	buf_item item;
 	int id=*((int *)param);
+	free(param);
 
 	while(1)
 	{
@@ -70,12 +72,16 @@ int main()
 
 	for(i=0;i<NUM_PRODUCERS;i++)
 	{
-		pthread_create(&P_tid, NULL, producer, (void *)&i);
+		int * param=malloc(sizeof(*param));
+		*param=i;
+		pthread_create(&P_tid, NULL, producer, param);
 	}	
 
 	for(i=0;i<NUM_CONSUMERS;i++)
 	{
-		pthread_create(&C_tid, NULL, consumer, (void *)&i);
+		int * param=malloc(sizeof(*param));
+		*param=i;
+		pthread_create(&C_tid, NULL, consumer, param);
 	}
 
 	sleep(NUM_TIME);
