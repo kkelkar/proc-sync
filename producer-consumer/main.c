@@ -18,7 +18,7 @@ int random_num()
 void * producer(void * param)
 {
 	buf_item item;
-    int id=*((int *)param); 
+	int id=*((int *)param); 
 
 	while(1)
 	{
@@ -65,7 +65,8 @@ int main()
 	int i;
 	pthread_t P_tid, C_tid;
 
-	buf_init();
+	if(buf_init() == FAIL)
+		return -1;
 
 	for(i=0;i<NUM_PRODUCERS;i++)
 	{
